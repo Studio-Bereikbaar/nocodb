@@ -272,17 +272,18 @@ export class DataAttachmentV3Service {
       );
 
       // Step 1: Create FileReference without workspace info and mark as deleted
-      const tempAttachmentId = await FileReference.insert(
-        { ...context, workspace_id: null, base_id: null },
+      await FileReference.insert(
+        {
+          ...context,
+          workspace_id: RootScopes.ROOT,
+          base_id: RootScopes.ROOT,
+        },
         {
           storage: storageAdapter.name,
           file_url:
             resultAttachmentUrl ?? path.join('download', filePath, filename),
           file_size: fileSize,
           fk_user_id: context?.user?.id ?? 'anonymous',
-          source_id: baseModel.model.source_id,
-          fk_model_id: modelId,
-          fk_column_id: column.id,
           is_external: !(await baseModel.getSource()).isMeta(),
           deleted: true,
         },
@@ -290,7 +291,6 @@ export class DataAttachmentV3Service {
 
       // Step 2: Create FileReference with workspace info and deleted: false
       const attachmentId = await FileReference.insert(context, {
-        storage: storageAdapter.name,
         file_url:
           resultAttachmentUrl ?? path.join('download', filePath, filename),
         file_size: fileSize,
