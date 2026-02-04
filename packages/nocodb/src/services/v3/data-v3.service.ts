@@ -281,6 +281,7 @@ export class DataV3Service {
       : record[getPrimaryKey(primaryKey)];
 
     // Build id_fields object with individual PK values
+    // this will be useful for internal works & automation, especially backward compatibility v2 api
     const idFields: Record<string, any> = {};
     if (primaryKeys && primaryKeys.length > 0) {
       for (const pk of primaryKeys) {
