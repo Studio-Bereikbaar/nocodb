@@ -280,9 +280,23 @@ export class DataV3Service {
       ? getCompositePkValue(primaryKeys, record, { skipSubstitutingColumnIds })
       : record[getPrimaryKey(primaryKey)];
 
+    // Build id_fields object with individual PK values
+    const idFields: Record<string, any> = {};
+    if (primaryKeys && primaryKeys.length > 0) {
+      for (const pk of primaryKeys) {
+        const key = skipSubstitutingColumnIds ? pk.id : pk.title;
+        idFields[key] =
+          record[pk.title] ?? record[pk.column_name] ?? record[pk.id];
+      }
+    } else if (primaryKey) {
+      const key = getPrimaryKey(primaryKey);
+      idFields[key] = record[key] ?? record[primaryKey.column_name];
+    }
+
     const result: DataRecord = {
       // Always include the 'id' property for APIv3
       id: recordPrimaryKeyValue,
+      id_fields: idFields,
       fields: transformedFields,
     };
     return result;
