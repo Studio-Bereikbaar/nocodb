@@ -12504,8 +12504,8 @@
           }
         }
       },
-      "WorkflowMeta": {
-        "description": "Workflow metadata including execution configuration",
+      "WorkflowOptions": {
+        "description": "Workflow options including execution configuration and display settings",
         "type": "object",
         "properties": {
           "run_as": {
@@ -12523,6 +12523,10 @@
               }
             },
             "required": ["type"]
+          },
+          "icon": {
+            "type": "string",
+            "description": "Custom emoji icon for the workflow"
           }
         }
       },
@@ -12572,9 +12576,9 @@
             "$ref": "#/components/schemas/WorkflowDraft",
             "description": "Draft configuration with unpublished changes. Null when no draft exists."
           },
-          "meta": {
-            "$ref": "#/components/schemas/WorkflowMeta",
-            "description": "Workflow metadata including execution configuration"
+          "options": {
+            "$ref": "#/components/schemas/WorkflowOptions",
+            "description": "Workflow options including execution configuration and display settings"
           },
           "order": {
             "type": "number",
@@ -12614,9 +12618,9 @@
             "type": ["string", "null"],
             "description": "Description of the workflow."
           },
-          "meta": {
-            "$ref": "#/components/schemas/WorkflowMeta",
-            "description": "Metadata for the workflow."
+          "options": {
+            "$ref": "#/components/schemas/WorkflowOptions",
+            "description": "Workflow options including execution configuration and display settings."
           }
         }
       },
@@ -12636,9 +12640,9 @@
             "type": "boolean",
             "description": "Whether the workflow is enabled."
           },
-          "meta": {
-            "$ref": "#/components/schemas/WorkflowMeta",
-            "description": "Metadata for the workflow."
+          "options": {
+            "$ref": "#/components/schemas/WorkflowOptions",
+            "description": "Workflow options including execution configuration and display settings."
           },
           "order": {
             "type": "number",
