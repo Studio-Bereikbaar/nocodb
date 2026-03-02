@@ -86,6 +86,7 @@ export enum PlanFeatureTypes {
   FEATURE_VIEW_SECTIONS = 'feature_view_sections',
   FEATURE_MAP_VIEW = 'feature_map_view',
   FEATURE_TIMELINE_VIEW = 'feature_timeline_view',
+  FEATURE_API_WORKFLOW_MANAGEMENT = 'feature_api_workflow_management',
 }
 
 export enum PlanTitles {
@@ -321,6 +322,7 @@ export const PlanFeatureUpgradeMessages: Record<PlanFeatureTypes, string> = {
   [PlanFeatureTypes.FEATURE_VIEW_SECTIONS]: 'to organize views into sections.',
   [PlanFeatureTypes.FEATURE_MAP_VIEW]: 'to use map view.',
   [PlanFeatureTypes.FEATURE_TIMELINE_VIEW]: 'to use timeline view.',
+  [PlanFeatureTypes.FEATURE_API_WORKFLOW_MANAGEMENT]: 'to use workflow api.',
 };
 
 export const getUpgradeMessage = (
