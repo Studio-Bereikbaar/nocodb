@@ -9521,7 +9521,10 @@
                   }
                 }
               }
-            ]
+            ],
+            "errorMessage": {
+              "oneOf": "Invalid field type or options. Ensure 'type' is a valid field type and 'options' matches the schema for that type."
+            }
           }
         ]
       },
@@ -9719,7 +9722,10 @@
           {
             "$ref": "#/components/schemas/FilterGroupLevel1"
           }
-        ]
+        ],
+        "errorMessage": {
+          "oneOf": "Must match either a Filter or a FilterGroup schema."
+        }
       },
       "FilterUpdate": {
         "allOf": [
@@ -9743,7 +9749,10 @@
               {
                 "$ref": "#/components/schemas/FilterGroup"
               }
-            ]
+            ],
+            "errorMessage": {
+              "oneOf": "Must match either a Filter or a FilterGroup schema."
+            }
           }
         ]
       },
