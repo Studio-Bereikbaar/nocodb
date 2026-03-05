@@ -6631,7 +6631,10 @@
               {
                 "$ref": "#/components/schemas/FieldOptions/User"
               }
-            ]
+            ],
+            "errorMessage": {
+              "oneOf": "Invalid field type or options. Ensure 'type' is a valid field type and 'options' matches the schema for that type."
+            }
           },
           {
             "$ref": "#/components/schemas/FieldBaseCreate"
@@ -6732,7 +6735,10 @@
               {
                 "$ref": "#/components/schemas/FieldOptions/User"
               }
-            ]
+            ],
+            "errorMessage": {
+              "oneOf": "Invalid field type or options. Ensure 'type' is a valid field type and 'options' matches the schema for that type."
+            }
           },
           {
             "$ref": "#/components/schemas/TableFieldBaseCreate"
@@ -6919,6 +6925,9 @@
               }
             }
           ],
+          "errorMessage": {
+            "oneOf": "Each member must have either a valid 'user_id' or a valid 'email', but not both."
+          },
           "description": "An object representing a new member to be created."
         },
         "description": "Array of members to be created."
@@ -7382,6 +7391,9 @@
             ]
           }
         ],
+        "errorMessage": {
+          "oneOf": "Invalid row colour configuration. Must match one of the supported colour rule formats."
+        },
         "discriminator": {
           "propertyName": "mode"
         }
@@ -7735,6 +7747,9 @@
                 }
               }
             ],
+            "errorMessage": {
+              "oneOf": "Invalid view type or options. Ensure the view type is valid and its properties match the expected schema."
+            },
             "discriminator": {
               "propertyName": "type"
             }
@@ -7880,6 +7895,9 @@
                 }
               }
             ],
+            "errorMessage": {
+              "oneOf": "Invalid view type or options. Ensure the view type is valid and its properties match the expected schema."
+            },
             "discriminator": {
               "propertyName": "type"
             }
@@ -8098,6 +8116,9 @@
                 }
               }
             ],
+            "errorMessage": {
+              "oneOf": "Invalid view type or options. Ensure the view type is valid and its properties match the expected schema."
+            },
             "discriminator": {
               "propertyName": "type"
             }
@@ -9013,6 +9034,9 @@
             "additionalProperties": false
           }
         ],
+        "errorMessage": {
+          "oneOf": "Invalid button field options. Must match one of the supported button action types (webhook, url, ai, script)."
+        },
         "discriminator": {
           "propertyName": "type",
           "mapping": {
@@ -9273,7 +9297,10 @@
                   }
                 }
               }
-            ]
+            ],
+            "errorMessage": {
+              "oneOf": "Invalid field options. Ensure 'uidt' is a valid field type and the options match the schema for that type."
+            }
           }
         ]
       },
@@ -9285,7 +9312,10 @@
           {
             "$ref": "#/components/schemas/FilterGroup"
           }
-        ]
+        ],
+        "errorMessage": {
+          "oneOf": "Must match either a Filter or a FilterGroup schema."
+        }
       },
       "FieldUpdate": {
         "allOf": [
@@ -9631,7 +9661,10 @@
                 {
                   "$ref": "#/components/schemas/FilterGroupLevel3"
                 }
-              ]
+              ],
+              "errorMessage": {
+                "oneOf": "Must match either a Filter or a FilterGroup schema."
+              }
             },
             "description": "List of filters or nested filter groups at level 3."
           }
@@ -9662,7 +9695,10 @@
                 {
                   "$ref": "#/components/schemas/FilterGroupLevel2"
                 }
-              ]
+              ],
+              "errorMessage": {
+                "oneOf": "Must match either a Filter or a FilterGroup schema."
+              }
             },
             "description": "List of filters or nested filter groups at level 2."
           }
@@ -9783,6 +9819,9 @@
                 "type": "number"
               }
             ],
+            "errorMessage": {
+              "oneOf": "Field 'id' must be either a string or a number."
+            },
             "description": "Record identifier (primary key value)"
           },
           "fields": {
@@ -9882,6 +9921,9 @@
                 "type": "number"
               }
             ],
+            "errorMessage": {
+              "oneOf": "Field 'id' must be either a string or a number."
+            },
             "description": "Record identifier"
           },
           "fields": {
@@ -9908,6 +9950,9 @@
                 "type": "number"
               }
             ],
+            "errorMessage": {
+              "oneOf": "Field 'id' must be either a string or a number."
+            },
             "description": "Record identifier"
           }
         },
@@ -9949,6 +9994,9 @@
                       "type": "number"
                     }
                   ],
+                  "errorMessage": {
+                    "oneOf": "Field 'id' must be either a string or a number."
+                  },
                   "description": "Updated record identifier"
                 },
                 "fields": {
@@ -10008,7 +10056,10 @@
               {
                 "type": "null"
               }
-            ]
+            ],
+            "errorMessage": {
+              "oneOf": "Field 'record' must be either a valid record object or null."
+            }
           },
           "next": {
             "type": [
@@ -10322,6 +10373,9 @@
               }
             }
           ],
+          "errorMessage": {
+            "oneOf": "Each member must have either a valid 'user_id' or a valid 'email', but not both."
+          },
           "description": "An object representing a new workspace user to be created."
         },
         "description": "Array of workspace users to be created."
@@ -10401,6 +10455,9 @@
                 "type": "null"
               }
             ],
+            "errorMessage": {
+              "oneOf": "Field 'icon_type' must be either a string or null."
+            },
             "description": "Team icon type",
             "example": "EMOJI"
           },
@@ -10505,6 +10562,9 @@
                 "type": "null"
               }
             ],
+            "errorMessage": {
+              "oneOf": "Field 'icon_type' must be either a string or null."
+            },
             "description": "Team icon type",
             "example": "EMOJI"
           },
@@ -10566,6 +10626,9 @@
                 "type": "null"
               }
             ],
+            "errorMessage": {
+              "oneOf": "Field 'icon_type' must be either a string or null."
+            },
             "description": "Team icon type",
             "example": "EMOJI"
           },
@@ -10607,6 +10670,9 @@
                 "type": "null"
               }
             ],
+            "errorMessage": {
+              "oneOf": "Field 'icon_type' must be either a string or null."
+            },
             "description": "Team icon type",
             "example": "EMOJI"
           },
