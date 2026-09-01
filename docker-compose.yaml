@@ -5,7 +5,7 @@ version: "3.8"
 
 services:
   nocodb:
-    image: nocodb/nocodb:0.301.4
+    image: nocodb/nocodb:2026.08.1
     restart: unless-stopped
     environment:
       NC_DB: "pg://nocodb-db:5432?u=${POSTGRES_USER}&p=${POSTGRES_PASSWORD}&d=${POSTGRES_DB}"
