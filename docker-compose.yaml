@@ -23,6 +23,9 @@ services:
       NC_SECURE_ATTACHMENTS: "true"
       NC_DISABLE_AUDIT: "false"
       NC_CONNECTION_ENCRYPT_KEY: "${NC_CONNECTION_ENCRYPT_KEY}"
+      # SSRF opt-ins (2026.x guards; sibling-container DB + internal webhook targets)
+      NC_ALLOW_LOCAL_EXTERNAL_DBS: "true"       # external data sources: sb_finance / smoke tests
+      NC_WEBHOOK_ALLOW_PRIVATE_NETWORK: "true"  # promote-action webhook -> internal service (board v2)
       # Microsoft SSO (OIDC)
       NC_OIDC_ISSUER: "https://login.microsoftonline.com/${AZURE_TENANT_ID}/v2.0"
       NC_OIDC_AUTHORIZATION_URL: "https://login.microsoftonline.com/${AZURE_TENANT_ID}/oauth2/v2.0/authorize"
