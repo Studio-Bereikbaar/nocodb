@@ -43,6 +43,7 @@ services:
     networks:
       - default
       - coolify
+      - sb-internal   # sb_finance external source (v7, 2026-09-01)
     labels:
       - "traefik.docker.network=coolify"
     healthcheck:
@@ -85,4 +86,6 @@ volumes:
 
 networks:
   coolify:
+    external: true
+  sb-internal:
     external: true
