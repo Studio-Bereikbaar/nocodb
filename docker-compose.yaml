@@ -26,15 +26,9 @@ services:
       # SSRF opt-ins (2026.x guards; sibling-container DB + internal webhook targets)
       NC_ALLOW_LOCAL_EXTERNAL_DBS: "true"       # external data sources: sb_finance / smoke tests
       NC_WEBHOOK_ALLOW_PRIVATE_NETWORK: "true"  # promote-action webhook -> internal service (board v2)
-      # Microsoft SSO (OIDC)
-      NC_OIDC_ISSUER: "https://login.microsoftonline.com/${AZURE_TENANT_ID}/v2.0"
-      NC_OIDC_AUTHORIZATION_URL: "https://login.microsoftonline.com/${AZURE_TENANT_ID}/oauth2/v2.0/authorize"
-      NC_OIDC_TOKEN_URL: "https://login.microsoftonline.com/${AZURE_TENANT_ID}/oauth2/v2.0/token"
-      NC_OIDC_USERINFO_URL: "https://graph.microsoft.com/oidc/userinfo"
-      NC_OIDC_CLIENT_ID: "${AZURE_CLIENT_ID}"
-      NC_OIDC_CLIENT_SECRET: "${AZURE_CLIENT_SECRET}"
-      NC_OIDC_DISPLAY_NAME: "Studio Bereikbaar"
-      NC_OIDC_SCOPE: "openid email profile"
+      # SSO: NocoDB CE 2026.x ships no OIDC strategy (the NC_OIDC_* Entra block of 0.301.4 is dead
+      # config, removed 2026-09-07). Identity is enforced in front by the `auth` service below
+      # (Keycloak auth.studiobereikbaar.nl, brokers Entra) — Access-Planes RFC ruling 1.
     depends_on:
       nocodb-db:
         condition: service_healthy
@@ -52,6 +46,48 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
+
+  # Keycloak gate — same pattern as sb-viewer/docker-compose.nsl.yml (oauth2-proxy as reverse proxy,
+  # repo-owned Traefik labels on the gate, the app itself has no public router).
+  # Prereqs in Coolify env: OAUTH2_PROXY_CLIENT_SECRET (Keycloak client `facturatie`, realm maphub,
+  # redirect URI https://facturatie.studiobereikbaar.nl/oauth2/callback) + OAUTH2_PROXY_COOKIE_SECRET
+  # (32 random bytes, base64url). The Coolify domain on the `nocodb` service must be cleared, otherwise
+  # Coolify's generated router bypasses the gate.
+  auth:
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
+    restart: unless-stopped
+    depends_on:
+      nocodb:
+        condition: service_healthy
+    environment:
+      OAUTH2_PROXY_PROVIDER: keycloak-oidc
+      OAUTH2_PROXY_OIDC_ISSUER_URL: https://auth.studiobereikbaar.nl/realms/maphub
+      OAUTH2_PROXY_CLIENT_ID: facturatie
+      OAUTH2_PROXY_CLIENT_SECRET: "${OAUTH2_PROXY_CLIENT_SECRET}"
+      OAUTH2_PROXY_COOKIE_SECRET: "${OAUTH2_PROXY_COOKIE_SECRET}"
+      OAUTH2_PROXY_REDIRECT_URL: https://facturatie.studiobereikbaar.nl/oauth2/callback
+      OAUTH2_PROXY_COOKIE_DOMAINS: facturatie.studiobereikbaar.nl
+      OAUTH2_PROXY_COOKIE_SECURE: "true"
+      OAUTH2_PROXY_EMAIL_DOMAINS: "*"
+      OAUTH2_PROXY_HTTP_ADDRESS: 0.0.0.0:4180
+      OAUTH2_PROXY_UPSTREAMS: http://nocodb:8080/
+      OAUTH2_PROXY_REVERSE_PROXY: "true"
+      OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: "true"   # straight to Keycloak/Microsoft, no interstitial
+      OAUTH2_PROXY_WHITELIST_DOMAINS: facturatie.studiobereikbaar.nl
+      OAUTH2_PROXY_OIDC_EXTRA_AUDIENCES: account
+      OAUTH2_PROXY_PASS_AUTHORIZATION_HEADER: "false"
+      OAUTH2_PROXY_PASS_ACCESS_TOKEN: "false"
+      OAUTH2_PROXY_SET_XAUTHREQUEST: "false"
+    networks:
+      - default
+      - coolify
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=coolify"
+      - "traefik.http.routers.facturatie.rule=Host(`facturatie.studiobereikbaar.nl`)"
+      - "traefik.http.routers.facturatie.entrypoints=https"
+      - "traefik.http.routers.facturatie.tls.certresolver=letsencrypt"
+      - "traefik.http.services.facturatie.loadbalancer.server.port=4180"
 
   nocodb-db:
     image: postgres:16.6
