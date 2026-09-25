@@ -1,0 +1,9 @@
+{
+  "name": "nc-sso-bridge",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Keycloak (oauth2-proxy) -> NocoDB session bridge for facturatie.studiobereikbaar.nl",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "dependencies": { "pg": "8.13.1" }
+}
