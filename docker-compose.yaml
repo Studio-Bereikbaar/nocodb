@@ -20,6 +20,10 @@ services:
       NC_SMTP_USERNAME: "${NC_SMTP_USERNAME}"
       NC_SMTP_PASSWORD: "${NC_SMTP_PASSWORD}"
       NC_DISABLE_TELE: "true"
+      # No NocoDB passwords: login is Microsoft via Keycloak (auth) + sso-bridge only. Also makes the
+      # invite mail's button open the base instead of /signup. Break-glass if Keycloak or the bridge
+      # is down: remove this line + push; API tokens (loader, nc_exec) are unaffected either way.
+      NC_DISABLE_EMAIL_AUTH: "true"
       NC_SECURE_ATTACHMENTS: "true"
       NC_DISABLE_AUDIT: "false"
       NC_CONNECTION_ENCRYPT_KEY: "${NC_CONNECTION_ENCRYPT_KEY}"
