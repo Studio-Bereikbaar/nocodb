@@ -68,7 +68,10 @@ services:
       OAUTH2_PROXY_REDIRECT_URL: https://facturatie.studiobereikbaar.nl/oauth2/callback
       OAUTH2_PROXY_COOKIE_DOMAINS: facturatie.studiobereikbaar.nl
       OAUTH2_PROXY_COOKIE_SECURE: "true"
-      OAUTH2_PROXY_EMAIL_DOMAINS: "*"
+      # sso-bridge maps the gate's email to a NocoDB user, so the gate admits only verified SB
+      # addresses: the maphub realm also has self-registration (local Keycloak accounts)
+      OAUTH2_PROXY_EMAIL_DOMAINS: studiobereikbaar.nl
+      OAUTH2_PROXY_INSECURE_OIDC_ALLOW_UNVERIFIED_EMAIL: "false"
       OAUTH2_PROXY_HTTP_ADDRESS: 0.0.0.0:4180
       OAUTH2_PROXY_UPSTREAMS: http://sso-bridge:8081/   # bridge → nocodb (single login, 2026-09-25)
       # sso-bridge trusts X-Forwarded-Email: the gate must set it from the Keycloak claim and strip
